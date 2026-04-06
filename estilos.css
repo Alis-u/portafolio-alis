@@ -1,0 +1,31 @@
+body {
+  font-family: Arial;
+  background: #fff;
+  margin: 0;
+}
+
+header {
+  background: #e5077e;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.proyecto {
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+}
+
+h2 {
+  color: #e5077e;
+}
+
+a {
+  display: inline-block;
+  margin-top: 20px;
+  background: #fdea18;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: black;
+}
