@@ -2,38 +2,204 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Portafolio - Alis Espinoza</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alis Espinoza | Portafolio</title>
+  <link rel="stylesheet" href="estilos.css">
 </head>
-
 <body>
 
-  <header>
-    <h1>Alis Espinoza</h1>
-    <p>UX/UI Designer + Desarrollo Web</p>
+  <header class="hero">
+    <nav class="navbar">
+      <div class="brand">
+        <div class="logo-box">
+          <img src="img/logo.png" alt="Logo Alis Espinoza">
+        </div>
+        <div class="brand-text">
+          <p class="brand-name">Alis Espinoza</p>
+          <p class="brand-role">Full Stack Junior</p>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <p class="eyebrow">Portafolio profesional</p>
+      <h1>Full Stack Junior con base en Diseño Gráfico y UX/UI.</h1>
+      <p class="hero-text">
+        Soy Alis Espinoza, Full Stack Junior con base en Diseño Gráfico y UX/UI.
+        Me interesa crear productos digitales funcionales, visualmente atractivos y bien pensados,
+        combinando experiencia de usuario, diseño visual y desarrollo web.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#proyectos" class="btn btn-primary">Ver proyectos</a>
+        <a href="#contacto" class="btn btn-secondary">Contactarme</a>
+      </div>
+    </div>
   </header>
 
-  <section class="proyecto">
-    <h2>Dilo Bonito – Ecommerce Django</h2>
+  <main>
+    <section id="sobre-mi" class="section section-light">
+      <div class="container about">
+        <div class="about-text">
+          <p class="section-tag">Sobre mí</p>
+          <h2>Diseño, experiencia de usuario y desarrollo en un mismo perfil</h2>
+          <p>
+            Mi perfil combina una base en Diseño Gráfico y UX/UI con formación en desarrollo web,
+            lo que me permite entender tanto la parte visual y estratégica de un producto digital
+            como su implementación técnica.
+          </p>
+          <p>
+            Me interesa participar en equipos donde pueda aportar desde una mirada integral:
+            diseñando experiencias claras, colaborando con desarrollo y construyendo soluciones funcionales.
+          </p>
+        </div>
 
-    <p><strong>Descripción:</strong> Desarrollo de una aplicación web para la gestión de Gift Boxes.</p>
+        <div class="about-card">
+          <h3>Habilidades destacadas</h3>
+          <ul>
+            <li>Diseño Gráfico</li>
+            <li>UX/UI y prototipado</li>
+            <li>HTML, CSS y Bootstrap</li>
+            <li>Python y Django</li>
+            <li>Trabajo colaborativo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-    <p><strong>Desafío:</strong> Integrar frontend y backend y evitar duplicación de datos.</p>
+    <section id="proyectos" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-tag">Proyectos</p>
+          <h2>Mis Proyectos</h2>
+          <p>
+            Aquí presento proyectos que reflejan mi crecimiento técnico, mi base en diseño
+            y mi capacidad para resolver problemas desde una mirada funcional y visual.
+          </p>
+        </div>
 
-    <p><strong>Solución:</strong> Implementación de CRUD con Django y validaciones con get_or_create().</p>
+        <div class="projects-grid">
 
-    <p><strong>Herramientas:</strong> Python, Django, Bootstrap, HTML, CSS</p>
+          <article class="project-card">
+            <div class="project-image">
+              <img src="img/Proyecto1.svg" alt="Vista previa proyecto 1">
+            </div>
 
-    <p><strong>Aprendizajes:</strong> ORM, validaciones, integración frontend-backend</p>
+            <div class="project-top">
+              <span class="project-badge">DJANGO · ORM</span>
+              <h3>Desarrollo Web con Django -  GiftBoxes Dilo Bonito</h3>
+            </div>
 
-    <p><strong>Métricas:</strong> Reducción de duplicados y mejora del flujo de pedidos</p>
+            <div class="project-content">
+              <p><strong>Descripción:</strong> Desarrollo de una aplicación web para gestionar Gift Boxes, clientes y pedidos.</p>
+              <p><strong>Desafío:</strong> Integrar frontend y backend, aplicar ORM y evitar duplicación de clientes.</p>
+              <p><strong>Solución:</strong> Implementé un CRUD completo con Django, validaciones con formularios y lógica con <code>get_or_create()</code>.</p>
+              <p><strong>Tecnologías:</strong> Python, Django, SQLite, HTML, CSS, Bootstrap.</p>
+              <p><strong>Aprendizajes:</strong> ORM, relaciones entre modelos, formularios, validaciones y conexión entre interfaz y lógica backend.</p>
+              <p><strong>Métricas:</strong> Mejor organización de pedidos, reducción de duplicados y flujo más claro de compra.</p>
+              <p><strong>Habilidades:</strong> UX/UI, desarrollo web, resolución de problemas, pensamiento estructurado.</p>
+              <p><strong>Justificación:</strong> Elegí este proyecto porque representa mi perfil híbrido entre diseño y desarrollo.</p>
+            </div>
 
-    <p><strong>Habilidades:</strong> UX/UI, desarrollo web, resolución de problemas</p>
+            <div class="project-actions">
+              <a href="https://github.com/Alis-u/dilo-bonito-django" target="_blank" class="btn btn-primary">Ver GitHub</a>
+            </div>
+          </article>
 
-    <p><strong>Justificación:</strong> Proyecto que refleja mi capacidad de desarrollar soluciones completas.</p>
+          <article class="project-card">
+            <div class="project-image">
+              <img src="img/Proyecto2.svg" alt="Vista previa proyecto 2">
+            </div>
 
-    <a href="https://github.com/Alis-u/portafolio-alis.git" target="_blank">Ver código en GitHub</a>
-  </section>
+            <div class="project-top">
+              <span class="project-badge">HTML·CSS·BOOTSTRAP</span>
+              <h3>Alke Wallet-Interfaz de billetera digital</h3>
+            </div>
+
+            <div class="project-content">
+              <p><strong>Descripción:</strong> Interfaz web de una billetera digital que permite visualizar saldo, simular transacciones y revisar movimientos.</p>
+              <p><strong>Desafío:</strong> Crear una experiencia dinámica y funcional solo con frontend, sin backend real.</p>
+              <p><strong>Solución:</strong> Se desarrollaron vistas con HTML, CSS y Bootstrap, incorporando JavaScript y jQuery para validaciones y simulación de datos</p>
+              <p><strong>Tecnologías:</strong> HTML, CSS, JavaScript,Bootstrap, jQuery.</p>
+              <p><strong>Aprendizajes:</strong> Manipulación del DOM, diseño responsive y creación de interacciones dinámicas.</p>
+              <p><strong>Métricas:</strong> Mejora en la experiencia de usuario y validación de formularios.</p>
+              <p><strong>Habilidades:</strong> Frontend, UX/UI, lógica básica, responsive design.</p>
+              <p><strong>Justificación:</strong> Proyecto que refleja mi capacidad de crear interfaces funcionales y bien diseñadas desde cero.</p>
+            </div>
+
+            <div class="project-actions">
+              <a href="https://github.com/Alis-u/Proyecto-Modulo-II" class="btn btn-primary">Ver GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-image">
+              <img src="img/Proyecto3.svg" alt="Vista previa proyecto 3">
+            </div>
+
+            <div class="project-top">
+              <span class="project-badge">Python</span>
+              <h3>Sistema de Gestión de Gift Boxes Dilo Bonito</h3>
+            </div>
+
+            <div class="project-content">
+              <p><strong>Descripción:</strong> Sistema en Python para gestionar datos de Gift Boxes, clientes y pedidos mediante consola.</p>
+              <p><strong>Desafío:</strong> Organizar la lógica del sistema y manejar correctamente los datos evitando errores y duplicaciones.</p>
+              <p><strong>Solución:</strong> Se implementó un sistema modular con funciones, estructuras de control y uso de listas/diccionarios para gestionar la información.</p>
+              <p><strong>Tecnologías:</strong>Python</p>
+              <p><strong>Aprendizajes:</strong> Lógica de programación, organización de código y manejo de datos.</p>
+              <p><strong>Métricas:</strong> Mejor organización de datos y reducción de errores en gestión.</p>
+              <p><strong>Habilidades:</strong> Python, lógica, estructuras de datos, modularización.</p>
+              <p><strong>Justificación:</strong> Se implementó un sistema modular con funciones, estructuras de control y uso de listas/diccionarios para gestionar la información.</p>
+            </div>
+
+            <div class="project-actions">
+              <a href="https://github.com/Alis-u/Sistema-de-gesti-n-de-Gift-Boxes-personalizados-en-Python" class="btn btn-primary">Ver GitHub</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-highlight">
+      <div class="container value-block">
+        <p class="section-tag">Propuesta de valor</p>
+        <h2>Aporto una mirada que une diseño, experiencia de usuario y desarrollo</h2>
+        <p>
+          Mi objetivo es aportar en equipos digitales desde una mirada integral,
+          cuidando la experiencia visual del producto, la claridad de la interacción
+          y su implementación técnica.
+        </p>
+      </div>
+    </section>
+
+    <section id="contacto" class="section section-light">
+      <div class="container contact">
+        <p class="section-tag">Contacto</p>
+        <h2>¿Hablamos?</h2>
+        <p>
+          Puedes encontrarme en GitHub, LinkedIn o escribirme para conocer más sobre mi trabajo.
+        </p>
+
+        <div class="contact-links">
+          <a href="https://github.com/Alis-u" target="_blank" class="btn btn-primary">GitHub</a>
+          <a href="https://www.linkedin.com/in/alisespinoza/" target="_blank" class="btn btn-secondary">LinkedIn</a>
+          <a href="mailto:espinozaalis@gmail.com" class="btn btn-secondary">Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Alis Espinoza · Portafolio profesional</p>
+  </footer>
 
 </body>
 </html>
