@@ -1,205 +1,935 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alis Espinoza | Portafolio</title>
-  <link rel="stylesheet" href="estilos.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alis Espinoza · Full Stack & UX/UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --yellow:   #ffec00;
+      --silver:   #d0d2d3;
+      --charcoal: #404041;
+      --white:    #ffffff;
+      --black:    #000000;
+      --ink:      #1a1a1a;
+      --muted:    #8a8a8a;
+      --light:    #f7f6f3;
+      --border:   #e8e6e0;
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Outfit', sans-serif;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--black);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .15s, background .2s;
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(0,0,0,.25);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: opacity .2s;
+    }
+    body:has(a:hover) .cursor,
+    body:has(button:hover) .cursor { background: var(--yellow); transform: translate(-50%,-50%) scale(2); }
+
+    /* ── GRID BACKGROUND ── */
+    .grid-bg {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none; z-index: 0;
+    }
+    /* fade edges */
+    .grid-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, rgba(255,255,255,.85) 100%);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 5rem;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 1.35rem;
+      color: var(--ink);
+      letter-spacing: .08em;
+      font-style: italic;
+    }
+    .nav-logo strong { font-style: normal; font-weight: 600; color: var(--black); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    /* ── LAYOUT ── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 5rem; }
+
+    .section-eyebrow {
+      display: flex; align-items: center; gap: .75rem;
+      font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .75rem;
+    }
+    .section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--charcoal); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 4rem;
+      padding: 10rem 5rem 6rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-size: .65rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: .4rem 1rem;
+      margin-bottom: 2.25rem;
+      animation: fadeUp .9s .1s both;
+    }
+    .hero-eyebrow .dot { width:5px; height:5px; border-radius:50%; background:#4caf50; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    .hero-name {
+      font-family: var(--font-serif);
+      font-size: clamp(4rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: .95;
+      letter-spacing: -.02em;
+      color: var(--black);
+      animation: fadeUp .9s .2s both;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--charcoal);
+    }
+    .hero-name .highlight {
+      display: inline-block;
+      background: var(--yellow);
+      padding: 0 .15em;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .hero-divider {
+      width: 48px; height: 1px;
+      background: var(--charcoal);
+      margin: 2rem 0;
+      animation: fadeUp .9s .3s both;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--charcoal);
+      max-width: 500px;
+      animation: fadeUp .9s .35s both;
+    }
+    .hero-desc strong { font-weight: 600; color: var(--black); }
+
+    .hero-roles {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      margin-top: 1.75rem;
+      animation: fadeUp .9s .4s both;
+    }
+    .role-chip {
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .38rem .9rem;
+    }
+    .role-chip.filled { background: var(--black); color: var(--white); }
+    .role-chip.outline { border: 1px solid var(--border); color: var(--charcoal); }
+    .role-chip.accent { background: var(--yellow); color: var(--black); }
+
+    .hero-cta {
+      display: flex; gap: .75rem;
+      margin-top: 2.5rem;
+      animation: fadeUp .9s .5s both;
+    }
+
+    /* hero side ornament */
+    .hero-ornament {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1rem;
+      animation: fadeUp .9s .6s both;
+    }
+    .orn-line { width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, var(--border)); }
+    .orn-box {
+      width: 96px; height: 96px;
+      border: 1px solid var(--border);
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .orn-box::before {
+      content: '';
+      position: absolute; inset: 6px;
+      border: 1px solid var(--yellow);
+    }
+    .orn-box-inner {
+      font-family: var(--font-serif);
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-align: center;
+      line-height: 1.6;
+      color: var(--charcoal);
+    }
+    .orn-line2 { width: 1px; height: 80px; background: linear-gradient(to bottom, var(--border), transparent); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      font-family: var(--font-sans);
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase;
+      padding: .8rem 1.8rem;
+      text-decoration: none;
+      transition: all .25s;
+      display: inline-flex; align-items: center; gap: .5rem;
+      cursor: none;
+    }
+    .btn-dark { background: var(--black); color: var(--white); border: 1px solid var(--black); }
+    .btn-dark:hover { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--ink); }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .about-text h2 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.1;
+      letter-spacing: -.01em;
+      margin-bottom: 2rem;
+    }
+    .about-text h2 em { font-style: italic; }
+    .about-text p {
+      font-size: .9rem; font-weight: 300;
+      color: var(--charcoal); line-height: 1.9;
+      margin-bottom: 1.1rem;
+    }
+    .about-text p strong { font-weight: 600; color: var(--black); }
+
+    /* skills */
+    .skills-wrap { padding-top: 3rem; }
+    .skill-group { margin-bottom: 2rem; }
+    .skill-group-title {
+      font-size: .6rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .75rem;
+    }
+    .skill-row { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .s-pill {
+      font-size: .7rem; font-weight: 400;
+      letter-spacing: .06em;
+      padding: .3rem .8rem;
+      transition: all .2s; cursor: default;
+    }
+    .s-pill.tech {
+      background: #1a1a1a;
+      border: 1px solid #2e2e2e;
+      color: #d0d2d3;
+    }
+    .s-pill.tech:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+    .s-pill.design {
+      background: rgba(255,236,0,.18);
+      border: 1px solid rgba(255,236,0,.35);
+      color: #6b5c00;
+    }
+    .s-pill.design:hover { background: var(--yellow); border-color: var(--yellow); color: var(--black); }
+
+    /* ── PROJECTS ── */
+    #projects {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .projects-head {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+    .projects-head h2 {
+      font-family: var(--font-serif);
+      font-size: 3rem; font-weight: 300;
+      color: var(--black); letter-spacing: -.01em;
+    }
+    .projects-head h2 em { font-style: italic; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .p-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      display: flex; flex-direction: column; gap: .9rem;
+      transition: background .25s;
+      position: relative;
+    }
+    .p-card:hover { background: var(--light); }
+    .p-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--yellow);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s ease;
+    }
+    .p-card:hover::after { transform: scaleX(1); }
+
+    .p-num {
+      font-family: var(--font-serif);
+      font-size: 3.5rem; font-weight: 300;
+      line-height: 1;
+      color: var(--yellow);
+      letter-spacing: -.03em;
+    }
+    .p-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem; font-weight: 600;
+      color: var(--black); letter-spacing: -.01em;
+      line-height: 1.2;
+    }
+    .p-desc {
+      font-size: .82rem; font-weight: 300;
+      color: var(--charcoal); line-height: 1.8;
+      flex: 1;
+    }
+    .p-stack { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .p-tag {
+      font-size: .62rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .22rem .65rem;
+      background: var(--light);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .p-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--black); text-decoration: none;
+      padding-top: .75rem;
+      border-top: 1px solid var(--border);
+      transition: gap .2s, color .2s;
+    }
+    .p-link:hover { gap: .7rem; color: var(--charcoal); }
+    .p-link svg { width: 13px; height: 13px; }
+
+    /* ── VALUE ── */
+    #value {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+      background: var(--light);
+    }
+    .value-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .value-left h2 {
+      font-family: var(--font-serif);
+      font-size: 3rem; font-weight: 300;
+      color: var(--black); line-height: 1.1;
+      letter-spacing: -.01em; margin-bottom: 1.5rem;
+    }
+    .value-left h2 em { font-style: italic; }
+    .value-left p {
+      font-size: .88rem; font-weight: 300;
+      color: var(--charcoal); line-height: 1.9;
+    }
+    .value-left p strong { font-weight: 600; color: var(--black); }
+
+    .value-items { display: flex; flex-direction: column; gap: 0; }
+    .v-item {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .v-item:first-child { border-top: 1px solid var(--border); }
+    .v-num {
+      font-family: var(--font-serif);
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--silver); padding-top: .1rem;
+    }
+    .v-item-text strong {
+      display: block;
+      font-size: .85rem; font-weight: 600;
+      color: var(--black); margin-bottom: .35rem;
+      letter-spacing: .01em;
+    }
+    .v-item-text span {
+      font-size: .8rem; font-weight: 300;
+      color: var(--charcoal); line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 9rem 0 7rem;
+      border-top: 1px solid var(--border);
+      background: #0f0f0f;
+    }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .contact-left h2 {
+      font-family: var(--font-serif);
+      font-size: 3.5rem; font-weight: 300;
+      color: var(--white); line-height: 1.1;
+      letter-spacing: -.02em; margin-bottom: 1.5rem;
+    }
+    .contact-left h2 em { font-style: italic; color: var(--yellow); }
+    .contact-left p {
+      font-size: .88rem; font-weight: 300;
+      color: var(--silver); line-height: 1.85;
+    }
+    .section-eyebrow.light {
+      color: rgba(208,210,211,.5);
+    }
+    .section-eyebrow.light::before { background: var(--silver); }
+
+    .contact-links { display: flex; flex-direction: column; gap: .75rem; }
+    .c-link {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(255,255,255,.08);
+      text-decoration: none;
+      transition: all .25s;
+      background: rgba(255,255,255,.04);
+    }
+    .c-link:hover { border-color: var(--white); background: var(--white); }
+    .c-link:hover .c-label, .c-link:hover .c-arrow { color: var(--black); }
+    .c-link.accent-link:hover { background: var(--yellow); border-color: var(--yellow); }
+    .c-link.accent-link:hover .c-label,
+    .c-link.accent-link:hover .c-arrow { color: var(--black); }
+
+    .c-link-left { display: flex; align-items: center; gap: 1rem; }
+    .c-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      color: var(--silver); flex-shrink: 0;
+      transition: all .25s;
+    }
+    .c-link:hover .c-icon { background: transparent; border-color: rgba(0,0,0,.15); color: var(--black); }
+    .c-link.accent-link:hover .c-icon { color: var(--black); border-color: rgba(0,0,0,.15); }
+    .c-icon svg { width: 15px; height: 15px; }
+    .c-label {
+      font-size: .78rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--white); transition: color .25s;
+    }
+    .c-sub {
+      font-size: .7rem; font-weight: 300;
+      color: rgba(208,210,211,.5); margin-top: .1rem;
+    }
+    .c-arrow { font-size: .9rem; color: rgba(255,255,255,.3); transition: color .25s; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 1;
+      background: var(--white);
+    }
+    .f-logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem; font-weight: 300;
+      font-style: italic; color: var(--ink);
+    }
+    .f-logo strong { font-style: normal; font-weight: 600; }
+    .f-copy {
+      font-size: .65rem; font-weight: 400;
+      letter-spacing: .1em; color: var(--muted);
+    }
+    .f-status {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .f-dot { width:6px; height:6px; border-radius:50%; background:#4caf50; animation:blink 2s infinite; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .reveal { opacity:0; transform:translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    /* Fallback: if JS fails or scroll doesn't trigger, show everything */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity:1; transform:none; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 1.25rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { grid-template-columns: 1fr; padding: 9rem 2rem 4rem; }
+      .hero-ornament { display: none; }
+      .container { padding: 0 2rem; }
+      .about-grid, .value-grid, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+    }
+  </style>
 </head>
 <body>
 
-  <header class="hero">
-    <nav class="navbar">
-      <div class="brand">
-        <div class="logo-box">
-          <img src="img/logo.png" alt="Logo Alis Espinoza">
-        </div>
-        <div class="brand-text">
-          <p class="brand-name">Alis Espinoza</p>
-          <p class="brand-role">Full Stack Junior</p>
-        </div>
-      </div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="grid-bg"></div>
 
-      <div class="nav-links">
-        <a href="#sobre-mi">Sobre mí</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-    </nav>
+  <!-- NAV -->
+ <nav style="display:flex; justify-content:space-between; align-items:center; padding:16px;">
 
+  <!-- Logo -->
+  <a href="/" style="display:flex; align-items:center;">
+    <img src="img/logo.png" 
+         alt="Logo Alis" 
+         style="height: 60px;px; width:auto; object-fit:contain;">
+  </a>
+    <ul class="nav-links">
+      <li><a href="#about">Sobre mí</a></li>
+      <li><a href="#projects">Proyectos</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
     <div class="hero-content">
-      <p class="eyebrow">Portafolio profesional</p>
-      <h1>Full Stack Junior con base en Diseño Gráfico y UX/UI.</h1>
-      <p class="hero-text">
-        Soy Alis Espinoza, Full Stack Junior con base en Diseño Gráfico y UX/UI.
-        Me interesa crear productos digitales funcionales, visualmente atractivos y bien pensados,
-        combinando experiencia de usuario, diseño visual y desarrollo web.
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        Disponible · Santiago, Chile
+      </div>
+      <h1 class="hero-name">
+        <span class="highlight">Alis</span><br>
+        <em>Espinoza</em>
+      </h1>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">
+        Desarrollo productos digitales donde <strong>el código y la experiencia de usuario convergen</strong>.
+        Full Stack Junior con base en diseño gráfico y especialización en UX/UI,
+        construyo interfaces que son tan funcionales como visualmente memorables.
       </p>
-
-      <div class="hero-buttons">
-        <a href="#proyectos" class="btn btn-primary">Ver proyectos</a>
-        <a href="#contacto" class="btn btn-secondary">Contactarme</a>
+      <div class="hero-roles">
+        <span class="role-chip filled">Full Stack Junior</span>
+        <span class="role-chip accent">UX / UI Design</span>
+        <span class="role-chip outline">Diseño Gráfico</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-dark">Ver proyectos →</a>
+        <a href="#contact" class="btn btn-outline">Conversemos</a>
       </div>
     </div>
-  </header>
+    <div class="hero-ornament">
+      <div class="orn-line"></div>
+      <div class="orn-box">
+        <div class="orn-box-inner">Full<br>Stack<br>&amp; UX</div>
+      </div>
+      <div class="orn-line2"></div>
+    </div>
+  </section>
 
-  <main>
-    <section id="sobre-mi" class="section section-light">
-      <div class="container about">
-        <div class="about-text">
-          <p class="section-tag">Sobre mí</p>
-          <h2>Diseño, experiencia de usuario y desarrollo en un mismo perfil</h2>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="section-eyebrow">Sobre mí</div>
+          <h2>Diseño que<br>vive en el <em>código</em></h2>
           <p>
-            Mi perfil combina una base en Diseño Gráfico y UX/UI con formación en desarrollo web,
-            lo que me permite entender tanto la parte visual y estratégica de un producto digital
-            como su implementación técnica.
+            Soy <strong>Alis Espinoza</strong>, mi perfil combina una base en Diseño Gráfico y UX/UI con formación en desarrollo web,
+            lo que me permite entender tanto la parte visual y estratégica de un producto digital como su implementación técnica.
           </p>
           <p>
-            Me interesa participar en equipos donde pueda aportar desde una mirada integral:
-            diseñando experiencias claras, colaborando con desarrollo y construyendo soluciones funcionales.
+            Me interesa participar en equipos donde pueda aportar desde una mirada integral: diseñando experiencias claras, colaborando
+            con desarrollo y construyendo soluciones funcionales.
           </p>
+        
         </div>
-
-        <div class="about-card">
-          <h3>Habilidades destacadas</h3>
-          <ul>
-            <li>Diseño Gráfico</li>
-            <li>UX/UI y prototipado</li>
-            <li>HTML, CSS y Bootstrap</li>
-            <li>Python y Django</li>
-            <li>Trabajo colaborativo</li>
-          </ul>
+        <div class="skills-wrap reveal" style="transition-delay:.12s">
+          <div class="section-eyebrow">Habilidades</div>
+          <div class="skill-group">
+            <div class="skill-group-title">Frontend</div>
+            <div class="skill-row">
+              <span class="s-pill tech">HTML5</span>
+              <span class="s-pill tech">CSS</span>
+              <span class="s-pill tech">JavaScript</span>
+              <span class="s-pill tech">Bootstrap</span>
+              <span class="s-pill tech">Responsive</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-title">Backend</div>
+            <div class="skill-row">
+              <span class="s-pill tech">Python</span>
+              <span class="s-pill tech">Django</span>
+              <span class="s-pill tech">SQL</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-title">UX / UI & Diseño</div>
+            <div class="skill-row">
+              <span class="s-pill design">Figma</span>
+              <span class="s-pill design">Wireframing</span>
+               <span class="s-pill tech">Suite Adobe</span>
+                <span class="s-pill tech">Wordpress</span>
+              <span class="s-pill design">Design Systems</span>
+               <span class="s-pill tech">Canvas</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-title">Herramientas</div>
+            <div class="skill-row">
+              <span class="s-pill tech">Git</span>
+              <span class="s-pill tech">GitHub</span>
+              <span class="s-pill tech">VS Code</span>
+              <span class="s-pill design">Metodologías Ágiles</span>
+               <span class="s-pill design">Maze</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="proyectos" class="section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="section-tag">Proyectos</p>
-          <h2>Mis Proyectos</h2>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="projects-head reveal">
+        <div>
+          <div class="section-eyebrow">Proyectos</div>
+          <h2> Desarrollo de Aplicaciones Full Stack Trainee <em>Work</em></h2>
+        </div>
+      </div>
+      <div class="projects-grid reveal" style="transition-delay:.1s">
+
+        <div class="p-card">
+          <div class="p-num">01</div>
+          <div class="p-title">Desarrollo Web con Django - GiftBoxes Dilo Bonito</div>
+          <p class="p-desc">
+           Desarrollo de una aplicación web para gestionar Gift Boxes, clientes y pedidos.
+          </p>
+          <div class="p-stack">
+            <span class="p-tag">Django</span>
+            <span class="p-tag">ORM</span>
+          </div>
+          <a href="https://github.com/Alis-u/dilo-bonito-django" class="p-link" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            Ver repositorio →
+          </a>
+        </div>
+
+        <div class="p-card">
+          <div class="p-num">02</div>
+          <div class="p-title">Alke Wallet-Interfaz de billetera digital</div>
+          <p class="p-desc">
+            Interfaz web de una billetera digital que permite visualizar saldo, simular transacciones 
+            y revisar movimientos.
+          </p>
+          <div class="p-stack">
+            <span class="p-tag">HTML</span>
+            <span class="p-tag">CSS</span>
+            <span class="p-tag">BOOTSTRAP</span>
+          </div>
+          <a href="https://github.com/Alis-u/Proyecto-Modulo-II" class="p-link" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            Ver repositorio →
+          </a>
+        </div>
+
+        <div class="p-card">
+          <div class="p-num">03</div>
+          <div class="p-title">Sistema de Gestión de Gift Boxes Dilo Bonito</div>
+          <p class="p-desc">
+            Sistema en Python para gestionar datos de Gift Boxes, clientes y pedidos mediante consola.
+          </p>
+          <div class="p-stack">
+            <span class="p-tag">Python</span>
+          </div>
+          <a href="https://github.com/Alis-u/Sistema-de-gesti-n-de-Gift-Boxes-personalizados-en-Python" class="p-link" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            Ver repositorio →
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+   <div style="text-align:center; margin-top:60px;">
+  
+  <a href="https://www.behance.net/alisespinoza" target="_blank"
+     style="
+       display:inline-flex;
+       align-items:center;
+       gap:10px;
+       padding:16px 36px;
+       font-size:14px;
+       letter-spacing:1px;
+       text-transform:uppercase;
+       text-decoration:none;
+       color:#000;
+       background:#F5D547;
+       border-radius:50px;
+       font-weight:600;
+       transition: all 0.3s ease;
+     "
+     onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(245,213,71,0.4)'"
+     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+  >
+
+    <!-- ICONO BEHANCE CORREGIDO -->
+   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-behance" viewBox="0 0 16 16">
+  <path d="M4.654 3c.461 0 .887.035 1.278.14.39.07.711.216.996.391s.497.426.641.747c.14.32.216.711.216 1.137 0 .496-.106.922-.356 1.242-.215.32-.566.606-.997.817.606.176 1.067.496 1.348.922s.461.957.461 1.563c0 .496-.105.922-.285 1.278a2.3 2.3 0 0 1-.782.887c-.32.215-.711.39-1.137.496a5.3 5.3 0 0 1-1.278.176L0 12.803V3zm-.285 3.978c.39 0 .71-.105.957-.285.246-.18.355-.497.355-.887 0-.216-.035-.426-.105-.567a1 1 0 0 0-.32-.355 1.8 1.8 0 0 0-.461-.176c-.176-.035-.356-.035-.567-.035H2.17v2.31c0-.005 2.2-.005 2.2-.005zm.105 4.193c.215 0 .426-.035.606-.07.176-.035.356-.106.496-.216s.25-.215.356-.39c.07-.176.14-.391.14-.641 0-.496-.14-.852-.426-1.102-.285-.215-.676-.32-1.137-.32H2.17v2.734h2.305zm6.858-.035q.428.427 1.278.426c.39 0 .746-.106 1.032-.286q.426-.32.53-.64h1.74c-.286.851-.712 1.457-1.278 1.848-.566.355-1.243.566-2.06.566a4.1 4.1 0 0 1-1.527-.285 2.8 2.8 0 0 1-1.137-.782 2.85 2.85 0 0 1-.712-1.172c-.175-.461-.25-.957-.25-1.528 0-.531.07-1.032.25-1.493.18-.46.426-.852.747-1.207.32-.32.711-.606 1.137-.782a4 4 0 0 1 1.493-.285c.606 0 1.137.105 1.598.355.46.25.817.532 1.102.958.285.39.496.851.641 1.348.07.496.105.996.07 1.563h-5.15c0 .58.21 1.11.496 1.396m2.24-3.732c-.25-.25-.642-.391-1.103-.391-.32 0-.566.07-.781.176s-.356.25-.496.39a.96.96 0 0 0-.25.497c-.036.175-.07.32-.07.46h3.196c-.07-.526-.25-.882-.497-1.132zm-3.127-3.728h3.978v.957h-3.978z"/>
+</svg>
+
+    Ver mis trabajos en diseño →
+  </a>
+
+</div>
+  </section>
+
+  <!-- VALUE -->
+  <section id="value">
+    <div class="container">
+      <div class="value-grid">
+        <div class="reveal">
+          <div class="section-eyebrow">Propuesta de valor</div>
+          <h2>¿Por qué<br>elegirme?</h2>
           <p>
-            Aquí presento proyectos que reflejan mi crecimiento técnico, mi base en diseño
-            y mi capacidad para resolver problemas desde una mirada funcional y visual.
+            Mi diferencial es la <strong>visión 360°</strong>: entiendo el producto
+            tanto desde la lógica del código como desde la experiencia del usuario final.
+            Menos fricciones entre equipos, mejores decisiones de producto
+            y resultados que se ven y se sienten.
           </p>
         </div>
-
-        <div class="projects-grid">
-
-          <article class="project-card">
-            <div class="project-image">
-              <img src="img/Proyecto1.svg" alt="Vista previa proyecto 1">
+        <div class="value-items reveal" style="transition-delay:.12s">
+          <div class="v-item">
+            <div class="v-num">01</div>
+            <div class="v-item-text">
+              <strong>Código + Diseño en una sola persona</strong>
+              <span>No necesitas coordinar entre dev y diseñador para las interfaces. Yo construyo y diseño en paralelo, con criterio en ambos mundos.</span>
             </div>
-
-            <div class="project-top">
-              <span class="project-badge">DJANGO · ORM</span>
-              <h3>Desarrollo Web con Django -  GiftBoxes Dilo Bonito</h3>
+          </div>
+          <div class="v-item">
+            <div class="v-num">02</div>
+            <div class="v-item-text">
+              <strong>Perspectiva UX en cada línea de código</strong>
+              <span>Cada decisión técnica considera el impacto en la experiencia. El diseño guía la arquitectura, no al revés.</span>
             </div>
-
-            <div class="project-content">
-              <p><strong>Descripción:</strong> Desarrollo de una aplicación web para gestionar Gift Boxes, clientes y pedidos.</p>
-              <p><strong>Desafío:</strong> Integrar frontend y backend, aplicar ORM y evitar duplicación de clientes.</p>
-              <p><strong>Solución:</strong> Implementé un CRUD completo con Django, validaciones con formularios y lógica con <code>get_or_create()</code>.</p>
-              <p><strong>Tecnologías:</strong> Python, Django, SQLite, HTML, CSS, Bootstrap.</p>
-              <p><strong>Aprendizajes:</strong> ORM, relaciones entre modelos, formularios, validaciones y conexión entre interfaz y lógica backend.</p>
-              <p><strong>Métricas:</strong> Mejor organización de pedidos, reducción de duplicados y flujo más claro de compra.</p>
-              <p><strong>Habilidades:</strong> UX/UI, desarrollo web, resolución de problemas, pensamiento estructurado.</p>
-              <p><strong>Justificación:</strong> Elegí este proyecto porque representa mi perfil híbrido entre diseño y desarrollo.</p>
+          </div>
+          <div class="v-item">
+            <div class="v-num">03</div>
+            <div class="v-item-text">
+              <strong>Mentalidad de aprendizaje continuo</strong>
+              <span>Junior en años, pero con disciplina, hambre de crecer y capacidad de aportar valor real desde el primer día.</span>
             </div>
-
-            <div class="project-actions">
-              <a href="https://github.com/Alis-u/dilo-bonito-django" target="_blank" class="btn btn-primary">Ver GitHub</a>
+          </div>
+          <div class="v-item">
+            <div class="v-num">04</div>
+            <div class="v-item-text">
+              <strong>Comunicación clara y trabajo en equipo</strong>
+              <span>Me adapto a metodologías ágiles, soy proactiva en la comunicación y mantengo a todos alineados durante el proceso.</span>
             </div>
-          </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <article class="project-card">
-            <div class="project-image">
-              <img src="img/Proyecto2.svg" alt="Vista previa proyecto 2">
-            </div>
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-left reveal">
+          <div class="section-eyebrow light">Contacto</div>
+          <h2>Hablemos de<br>tu <em>proyecto</em></h2>
+          <p>
+            Estoy abierta a oportunidades laborales, proyectos
+            freelance y colaboraciones. Si tienes algo en mente,
+            me encantaría escucharte.
+          </p>
+        </div>
+        <div class="contact-links reveal" style="transition-delay:.12s">
+<!-- LINKEDIN -->
+<a href="https://www.linkedin.com/in/alisespinoza" target="_blank"
+   style="text-decoration:none; color:inherit;">
+  <div style="display:flex; align-items:center; justify-content:space-between; background:#111; padding:20px; border-radius:14px; border:1px solid #222; margin-bottom:15px; max-width:500px;"
+       onmouseover="this.style.backgroundColor='#1a1a1a'"
+       onmouseout="this.style.backgroundColor='#111'">
 
-            <div class="project-top">
-              <span class="project-badge">HTML·CSS·BOOTSTRAP</span>
-              <h3>Alke Wallet-Interfaz de billetera digital</h3>
-            </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="width:52px; height:52px; background:#1a1a1a; display:flex; align-items:center; justify-content:center; border-radius:10px;">
+        <!-- LinkedIn SVG -->
+        <svg width="22" viewBox="0 0 24 24" fill="white">
+          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.82-2.2 3.75-2.2C20.4 8 24 10.4 24 15.4V24h-4v-7.6c0-1.8-.03-4.2-2.56-4.2-2.57 0-2.97 2-2.97 4.1V24h-4V8z"/>
+        </svg>
+      </div>
 
-            <div class="project-content">
-              <p><strong>Descripción:</strong> Interfaz web de una billetera digital que permite visualizar saldo, simular transacciones y revisar movimientos.</p>
-              <p><strong>Desafío:</strong> Crear una experiencia dinámica y funcional solo con frontend, sin backend real.</p>
-              <p><strong>Solución:</strong> Se desarrollaron vistas con HTML, CSS y Bootstrap, incorporando JavaScript y jQuery para validaciones y simulación de datos</p>
-              <p><strong>Tecnologías:</strong> HTML, CSS, JavaScript,Bootstrap, jQuery.</p>
-              <p><strong>Aprendizajes:</strong> Manipulación del DOM, diseño responsive y creación de interacciones dinámicas.</p>
-              <p><strong>Métricas:</strong> Mejora en la experiencia de usuario y validación de formularios.</p>
-              <p><strong>Habilidades:</strong> Frontend, UX/UI, lógica básica, responsive design.</p>
-              <p><strong>Justificación:</strong> Proyecto que refleja mi capacidad de crear interfaces funcionales y bien diseñadas desde cero.</p>
-            </div>
+      <div>
+        <div style="color:white; font-weight:600; letter-spacing:1px;">LINKEDIN</div>
+        <div style="color:#aaa; font-size:14px;">linkedin.com/in/alisespinoza</div>
+      </div>
+    </div>
 
-            <div class="project-actions">
-              <a href="https://github.com/Alis-u/Proyecto-Modulo-II" class="btn btn-primary">Ver GitHub</a>
-            </div>
-          </article>
+    <div style="color:#aaa; font-size:18px;">→</div>
+  </div>
+</a>
 
-          <article class="project-card">
-            <div class="project-image">
-              <img src="img/Proyecto3.svg" alt="Vista previa proyecto 3">
-            </div>
 
-            <div class="project-top">
-              <span class="project-badge">Python</span>
-              <h3>Sistema de Gestión de Gift Boxes Dilo Bonito</h3>
-            </div>
+<!-- GITHUB -->
+<a href="https://github.com/alisespinoza" target="_blank"
+   style="text-decoration:none; color:inherit;">
+  <div style="display:flex; align-items:center; justify-content:space-between; background:#111; padding:20px; border-radius:14px; border:1px solid #222; margin-bottom:15px; max-width:500px;"
+       onmouseover="this.style.backgroundColor='#1a1a1a'"
+       onmouseout="this.style.backgroundColor='#111'">
 
-            <div class="project-content">
-              <p><strong>Descripción:</strong> Sistema en Python para gestionar datos de Gift Boxes, clientes y pedidos mediante consola.</p>
-              <p><strong>Desafío:</strong> Organizar la lógica del sistema y manejar correctamente los datos evitando errores y duplicaciones.</p>
-              <p><strong>Solución:</strong> Se implementó un sistema modular con funciones, estructuras de control y uso de listas/diccionarios para gestionar la información.</p>
-              <p><strong>Tecnologías:</strong>Python</p>
-              <p><strong>Aprendizajes:</strong> Lógica de programación, organización de código y manejo de datos.</p>
-              <p><strong>Métricas:</strong> Mejor organización de datos y reducción de errores en gestión.</p>
-              <p><strong>Habilidades:</strong> Python, lógica, estructuras de datos, modularización.</p>
-              <p><strong>Justificación:</strong> Se implementó un sistema modular con funciones, estructuras de control y uso de listas/diccionarios para gestionar la información.</p>
-            </div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="width:52px; height:52px; background:#1a1a1a; display:flex; align-items:center; justify-content:center; border-radius:10px;">
+        <!-- GitHub SVG REAL -->
+        <svg width="24" viewBox="0 0 24 24" fill="white">
+          <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.8-1.4-3.8-1.4-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 2-.7 2.5-1.1.1-.7.4-1.1.7-1.4-2.5-.3-5.1-1.3-5.1-5.6 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.5.1-3.1 0 0 .9-.3 3 .1a10.5 10.5 0 0 1 5.5 0c2.1-.4 3-.1 3-.1.6 1.6.2 2.8.1 3.1.7.8 1.1 1.7 1.1 2.9 0 4.3-2.6 5.3-5.1 5.6.4.3.8 1 .8 2v3c0 .4.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/>
+        </svg>
+      </div>
 
-            <div class="project-actions">
-              <a href="https://github.com/Alis-u/Sistema-de-gesti-n-de-Gift-Boxes-personalizados-en-Python" class="btn btn-primary">Ver GitHub</a>
-            </div>
-          </article>
+      <div>
+        <div style="color:white; font-weight:600; letter-spacing:1px;">GITHUB</div>
+        <div style="color:#aaa; font-size:14px;">github.com/Alis-u</div>
+      </div>
+    </div>
+
+    <div style="color:#aaa; font-size:18px;">→</div>
+  </div>
+</a>
+
+
+<!-- EMAIL -->
+<a href="mailto:alis.espinoza@live.cl?subject=Contacto desde portafolio&body=Hola Alis, vi tu portafolio y me gustaría hablar contigo."
+   style="text-decoration:none; color:inherit;">
+  <div style="display:flex; align-items:center; justify-content:space-between; background:#111; padding:20px; border-radius:14px; border:1px solid #222; max-width:500px;"
+       onmouseover="this.style.backgroundColor='#1a1a1a'"
+       onmouseout="this.style.backgroundColor='#111'">
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="width:52px; height:52px; background:#1a1a1a; display:flex; align-items:center; justify-content:center; border-radius:10px;">
+        <!-- Mail SVG -->
+        <svg width="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+
+      <div>
+        <div style="color:white; font-weight:600; letter-spacing:1px;">EMAIL</div>
+        <div style="color:#aaa; font-size:14px;">alis.espinoza@live.cl</div>
+      </div>
+    </div>
+
+    <div style="color:#aaa; font-size:18px;">→</div>
+  </div>
+</a>
 
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section section-highlight">
-      <div class="container value-block">
-        <p class="section-tag">Propuesta de valor</p>
-        <h2>Aporto una mirada que une diseño, experiencia de usuario y desarrollo</h2>
-        <p>
-          Mi objetivo es aportar en equipos digitales desde una mirada integral,
-          cuidando la experiencia visual del producto, la claridad de la interacción
-          y su implementación técnica.
-        </p>
-      </div>
-    </section>
-
-    <section id="contacto" class="section section-light">
-      <div class="container contact">
-        <p class="section-tag">Contacto</p>
-        <h2>¿Hablamos?</h2>
-        <p>
-          Puedes encontrarme en GitHub, LinkedIn o escribirme para conocer más sobre mi trabajo.
-        </p>
-
-        <div class="contact-links">
-          <a href="https://github.com/Alis-u" target="_blank" class="btn btn-primary">GitHub</a>
-          <a href="https://www.linkedin.com/in/alisespinoza/" target="_blank" class="btn btn-secondary">LinkedIn</a>
-          <a href="mailto:espinozaalis@gmail.com" class="btn btn-secondary">Email</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p>© 2026 Alis Espinoza · Portafolio profesional</p>
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-logo"><strong>Alis</strong> Espinoza</div>
+    <div class="f-copy">© 2025 · Full Stack Developer & UX/UI Designer</div>
+    <div class="f-status"><span class="f-dot"></span> Open to work</div>
   </footer>
 
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Cursor
+    const cur = document.getElementById('cursor');
+    const rng = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      cur.style.left=mx+'px'; cur.style.top=my+'px';
+    });
+    (function tick(){
+      rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+      rng.style.left=rx+'px'; rng.style.top=ry+'px';
+      requestAnimationFrame(tick);
+    })();
+
+    // Scroll reveal — trigger immediately for elements in viewport on load
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    },{threshold:0, rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    // Safety: reveal all after 1.5s if observer hasn't fired
+    setTimeout(()=>{ document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible')); }, 1500);
+  </script>
 </body>
 </html>
